@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help One</title>
+    <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="put.css">
+</head>
+<body data-scroll-container>
+    <div id="loader">
+        <div class="dog-loader">
+            <div class="dog-body"></div>
+            <div class="dog-head">
+                <div class="dog-ear dog-ear-left"></div>
+                <div class="dog-ear dog-ear-right"></div>
+                <div class="dog-eye dog-eye-left"></div>
+                <div class="dog-eye dog-eye-right"></div>
+                <div class="dog-nose"></div>
+            </div>
+            <div class="dog-tail"></div>
+            <div class="dog-leg leg-1"></div>
+            <div class="dog-leg leg-2"></div>
+            <div class="dog-leg leg-3"></div>
+            <div class="dog-leg leg-4"></div>
+            <div class="paw-prints">
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+            </div>
+            <div class="loading-text">FurCare Loading...</div>
+        </div>
+    </div>
+    <div id="main" data-scroll-section>
+        <div class="flip-container" id="flip-container">
+            <div class="flipper">
+                <div class="front">
+                    <div class="text-section">
+                        <h1>Hey, In search of <br> a home for your dog?</h1>
+                        <h3>Click Here👉</h3>
+                    </div>
+                    <img src="./Media Files/dog-image.png" alt="Dog Image" class="dog-image" id="dog-image">
+                </div>
+                <div class="back">
+                    <section class="form-section">
+                        <form id="adoptionForm">
+                            <label for="dogName">Dog's Name:</label>
+                            <input type="text" id="dogName" name="dogName" placeholder="Enter dog's name" required>
+
+                            <label for="breed">Breed:</label>
+                            <input type="text" id="breed" name="breed" placeholder="Enter dog's breed" required>
+
+                            <label for="age">Age (in years):</label>
+                            <input type="number" id="age" name="age" placeholder="Enter dog's age" required min="0">
+
+                            <label for="location">Location:</label>
+                            <input type="text" id="location" name="location" placeholder="Enter location" required>
+                        
+                            <label>Gender:</label>
+                            <div class="gender-container">
+                                <input type="radio" id="male" name="gender" value="male" required>
+                                <label for="male">Male</label>
+                                <input type="radio" id="female" name="gender" value="female" required>
+                                <label for="female">Female</label>
+                            </div>
+                        
+                            <div class="file-input-container">
+                                <label for="image" class="animated-file-input">
+                                    <span>Upload Dog's Image</span>
+                                    <input type="file" id="image" name="image" accept="image/*" required>
+                                </label>
+                            </div>
+
+                            <div class="submit-btn-container">
+                                <button type="submit" class="submit-btn">Submit Details</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("adoptionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Dog details submitted successfully! 🐕");
+            this.reset();
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.body.classList.add("loaded");
+            }, 1000); // 3 seconds loading time for demo purposes
+
+            const fileInput = document.getElementById("image");
+            const label = fileInput.previousElementSibling;
+
+            fileInput.addEventListener("change", function() {
+                const fileName = this.files[0].name;
+                label.textContent = fileName;
+            });
+
+            const flipContainer = document.getElementById("flip-container");
+            const dogImage = document.getElementById("dog-image");
+            const formSection = document.querySelector(".form-section");
+
+            dogImage.addEventListener("click", function() {
+                flipContainer.classList.add("flipped");
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!formSection.contains(event.target) && !dogImage.contains(event.target)) {
+                    flipContainer.classList.remove("flipped");
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>

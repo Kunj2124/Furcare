@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furcare Services</title>
+    <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loader">
+        <div class="dog-loader">
+            <div class="dog-body"></div>
+            <div class="dog-head">
+                <div class="dog-ear dog-ear-left"></div>
+                <div class="dog-ear dog-ear-right"></div>
+                <div class="dog-eye dog-eye-left"></div>
+                <div class="dog-eye dog-eye-right"></div>
+                <div class="dog-nose"></div>
+            </div>
+            <div class="dog-tail"></div>
+            <div class="dog-leg leg-1"></div>
+            <div class="dog-leg leg-2"></div>
+            <div class="dog-leg leg-3"></div>
+            <div class="dog-leg leg-4"></div>
+            <div class="paw-prints">
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+            </div>
+            <div class="loading-text">FurCare Loading...</div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="page2">
+            <h1 class="ourservice">Services We Offer</h1>
+            <div id="page2-bottom">
+                <h1>We connect compassionate individuals with pets in need of loving homes, creating lasting bonds and giving every pet a second chance at happiness.</h1>
+                <div id="bottom-2">
+                    <img src="./Media Files/adopt.png" alt="">
+                    <p>Users can browse profiles of adoptable animals, view their details, and communicate with shelters. We offer resources for responsible pet ownership to ensure a smooth adoption process.</p>
+                    <a href="#"><button class="btn1">Adopt Now</button></a>
+                </div>
+            </div>
+            <div id="page2-vol">
+                <div id="volus">
+                    <img src="./Media Files/consult.jpg" alt="">
+                    <p>This convenient and reliable service significantly reduces stress for both pets and their owners, ensuring that every pet receives quality care in the comfort of a familiar environment that they know and love.</p>
+                    <a href="https://ai-chatbot-one-ochre.vercel.app/"><button class="btn1">Consult</button></a>
+                </div>
+                <h1>"In-Home Vet Care" provides veterinary services at your home, offering routine check-ups, vaccinations, and minor treatments.</h1>
+            </div>
+            <div id="page2-bottom">
+                <h1>Help a Speechless Get a Home: Connect with Furcare to Create a Brighter Future for Local Strays in Need</h1>
+                
+                <div id="bottom-2">
+                    <img src="./Media Files/findhome.png" alt="">
+                    <p>This service empowers individuals to assist stray dogs in their area by connecting them with our organization, ensuring a loving home for each pup.</p>
+                    <a href="put.html"><button class="btn1">Help One</button></a>
+                </div>
+            </div>
+            <div id="page2-vol">
+                <div id="volus">
+                    <img src="./Media Files/examine.jpg" alt="">
+                    <p>This service ensures that all pets receive essential health evaluations, vaccinations, and preventative care, promoting overall well-being and supporting responsible pet ownership and care for strays.</p>
+                    <a href="requestvet.html"><button class="btn1">Call for Drive</button></a>
+                </div>
+                <h1>"Request a Vet Examination" allows pet owners and caregivers of stray dogs to schedule veterinary check-ups for animals. </h1>
+            </div>
+            <div id="page2-bottom">
+                <h1>Your Pet Buddy - an AI-powered chatbot that offers pet owners instant access to information about pet care, behavior, and health. </h1>
+                <div id="bottom-2">
+                    <img src="./Media Files/bot.jpg" alt="">
+                    <p>Users can ask questions and receive personalized advice and tips, enhancing their pet ownership experience and helping them make informed decisions for their furry friends.</p>
+                    <a href="https://ai-chatbot-one-ochre.vercel.app/"><button class="btn1">Chat</button></a>
+                </div>
+            </div>
+            <div id="page2-vol">
+                <div id="volus">
+                    <img src="./Media Files/vetfind.jpg" alt="">
+                    <p>Users can input their location to receive a list of nearby vets, complete with contact details and services offered. This tool helps pet owners quickly find trusted care, enhancing access to essential veterinary services.</p>
+                    <a href="https://ai-chatbot-one-ochre.vercel.app/"><button class="btn1">Find Vet</button></a>
+                </div>
+                <h1>"Find Vets Near You" is an AI service that helps pet owners locate nearby veterinary clinics and services.</h1>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+<script>
+    const scroll = new LocomotiveScroll({
+        el: document.querySelector('#main'),
+        smooth: true
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+                document.body.classList.add("loaded");
+            }, 1000);
+        });
+</script>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Now</title>
+    <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="put.css">
+</head>
+<body data-scroll-container>
+    <div id="loader">
+        <div class="dog-loader">
+            <div class="dog-body"></div>
+            <div class="dog-head">
+                <div class="dog-ear dog-ear-left"></div>
+                <div class="dog-ear dog-ear-right"></div>
+                <div class="dog-eye dog-eye-left"></div>
+                <div class="dog-eye dog-eye-right"></div>
+                <div class="dog-nose"></div>
+            </div>
+            <div class="dog-tail"></div>
+            <div class="dog-leg leg-1"></div>
+            <div class="dog-leg leg-2"></div>
+            <div class="dog-leg leg-3"></div>
+            <div class="dog-leg leg-4"></div>
+            <div class="paw-prints">
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+            </div>
+            <div class="loading-text">FurCare Loading...</div>
+        </div>
+    </div>
+    <div id="main" data-scroll-section>
+        <div class="flip-container" id="flip-container">
+            <div class="flipper">
+                <div class="front">
+                    <div class="text-section">
+                        <h1>Hey, Wanna gift <br> a Furry Friend <br> your love?</h1>
+                        <h3>Click Here👉</h3>
+                    </div>
+                    <img src="./Media Files/donate-image" alt="Dog Image" class="dog-image" id="dog-image">
+                </div>
+                <div class="back">
+                    <section class="form-section">
+                        <form id="adoptionForm">
+                            <h3 class="upi">UPI ID: example@upi</h3>
+                            
+                            <label for="Name">Donation in the Name of:</label>
+                            <input type="text" id="Name" name="Name" placeholder="Enter Name" required>
+
+                            <label for="email">Email ID:</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your Email" required>
+
+                            <label for="location">Locality:</label>
+                            <input type="text" id="location" name="location" placeholder="Enter your Locality" required>
+
+                            <label for="usage">How should we use your donation?</label>
+                            <select id="usage" name="usage" required>
+                                <option value="" disabled selected>Select One</option>
+                                <option value="food">Food</option>
+                                <option value="shelter">Shelter</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        
+                            <div class="submit-btn-container">
+                                <button type="submit" class="submit-btn">Submit Details</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("adoptionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Thanks for your love towards Dogs! 😊");
+            this.reset();
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.body.classList.add("loaded");
+            }, 1000); // 3 seconds loading time for demo purposes
+
+            const flipContainer = document.getElementById("flip-container");
+            const dogImage = document.getElementById("dog-image");
+            const formSection = document.querySelector(".form-section");
+
+            dogImage.addEventListener("click", function() {
+                flipContainer.classList.add("flipped");
+            });
+
+            document.addEventListener("click", function(event) {
+                if (!formSection.contains(event.target) && !dogImage.contains(event.target)) {
+                    flipContainer.classList.remove("flipped");
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>
