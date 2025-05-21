@@ -1,0 +1,14 @@
+com\furcare\service\UserContributionService.class
+com\furcare\config\SecurityConfig.class
+com\furcare\service\CustomUserDetailsService.class
+com\furcare\service\JwtService.class
+com\furcare\security\JwtAuthenticationFilter.class
+com\furcare\model\User.class
+com\furcare\controller\DashboardController$1.class
+com\furcare\controller\AuthController.class
+com\furcare\service\AuthService.class
+com\furcare\FurcareApplication.class
+com\furcare\repository\UserContributionRepository.class
+com\furcare\repository\UserRepository.class
+com\furcare\controller\DashboardController.class
+com\furcare\model\UserContribution.class

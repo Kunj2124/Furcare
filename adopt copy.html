@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veterinarians - FurCare</title>
+  <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css" />
+  <link rel="stylesheet" href="adopt.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    [data-scroll-container] {
+      min-height: 100vh;
+    }
+
+    #doctor-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 20px 0;
+    }
+
+    .dog-card {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+    }
+
+    .dog-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .dog-info h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #333;
+      text-align: center;
+    }
+
+    .dog-info p {
+      margin: 6px 0;
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .appointment-btn {
+      margin-top: 15px;
+      background-color: #d3b094;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .appointment-btn:hover {
+      background-color: #c19a7e;
+    }
+  </style>
+</head>
+<body data-scroll-container>
+  <div id="main" data-scroll-section>
+    <h1>Available Veterinarians</h1>
+    <div id="doctor-container" data-scroll></div>
+  </div>
+
+  <!-- Locomotive Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('#main'),
+        smooth: true
+      });
+
+      const doctorContainer = document.getElementById("doctor-container");
+
+      async function loadVeterinarians() {
+        try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            alert("You must be logged in to view the data.");
+            return;
+          }
+
+          const response = await fetch("http://localhost:8081/veterinarians", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch veterinarians");
+          }
+
+          const vets = await response.json();
+          displayVeterinarians(vets);
+        } catch (error) {
+          console.error("Error loading veterinarians:", error);
+          doctorContainer.innerHTML = "<p>Error loading veterinarians. Please try again later.</p>";
+        }
+      }
+
+      function displayVeterinarians(vets) {
+        if (vets.length === 0) {
+          doctorContainer.innerHTML = "<p>No veterinarians available at the moment.</p>";
+          return;
+        }
+
+        doctorContainer.innerHTML = vets.map(vet => {
+          const email = vet.emailId || "not-available@example.com";
+          const mailtoLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=Consultation Request&body=Hello Dr. ${encodeURIComponent(vet.name || '')},%0D%0A%0D%0AI'd like to book a consultation with you.%0D%0A%0D%0AThank you!%0D%0A- FurCare Client`;
+
+          return `
+            <div class="dog-card" data-scroll>
+              <div class="dog-info">
+                <h2>Dr. ${vet.name || "N/A"}</h2>
+                <p><strong>Age:</strong> ${vet.age ?? "N/A"}</p>
+                <p><strong>Gender:</strong> ${vet.gender || "N/A"}</p>
+                <p><strong>Qualification:</strong> ${vet.qualification || "N/A"}</p>
+                <p><strong>Work Experience:</strong> ${vet.workExperience || "N/A"}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Address:</strong> ${vet.address || "N/A"}</p>
+                <p><strong>PIN Code:</strong> ${vet.pin || "N/A"}</p>
+                <a href="${mailtoLink}" target="_blank" class="appointment-btn">Book Appointment</a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      loadVeterinarians();
+    });
+  </script>
+</body>
+</html>

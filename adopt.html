@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adopt a Dog - FurCare</title>
+  <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css" />
+  <link rel="stylesheet" href="adopt.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* hides native scroll */
+    }
+
+    [data-scroll-container] {
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body data-scroll-container>
+  <div id="main" data-scroll-section>
+    <h1>Available Dogs for Adoption</h1>
+
+    <div id="filters">
+      <input type="text" id="searchInput" placeholder="Search by name or breed...">
+      <select id="genderFilter">
+        <option value="">All Genders</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <select id="ageFilter">
+        <option value="">All Ages</option>
+        <option value="0-1">0-1 years</option>
+        <option value="1-3">1-3 years</option>
+        <option value="3-5">3-5 years</option>
+        <option value="5+">5+ years</option>
+      </select>
+    </div>
+
+    <div id="dogs-container"></div>
+  </div>
+
+  <!-- Locomotive Scroll Script -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('#main'),
+        smooth: true
+      });
+    });
+  </script>
+
+  <!-- Data Fetch & UI Logic -->
+  <script type="module">
+    const dogsContainer = document.getElementById('dogs-container');
+    const searchInput = document.getElementById('searchInput');
+    const genderFilter = document.getElementById('genderFilter');
+    const ageFilter = document.getElementById('ageFilter');
+
+    async function loadDogs() {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("You must be logged in to submit details.");
+          return;
+        }
+
+        const response = await fetch("http://localhost:8081/api/dashboard/alldog", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const dogs = await response.json();
+        displayDogs(dogs);
+      } catch (error) {
+        console.error("Error loading dogs:", error);
+        dogsContainer.innerHTML = "<p>Error loading dogs. Please try again later.</p>";
+      }
+    }
+
+    function displayDogs(dogs) {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedGender = genderFilter.value;
+      const selectedAge = ageFilter.value;
+
+      const filteredDogs = dogs.filter(dog => {
+        const matchesSearch = dog.name.toLowerCase().includes(searchTerm) || 
+                              dog.breed.toLowerCase().includes(searchTerm);
+        const matchesGender = !selectedGender || dog.gender === selectedGender;
+        const matchesAge = !selectedAge || isInAgeRange(dog.age, selectedAge);
+        return matchesSearch && matchesGender && matchesAge;
+      });
+
+      if (filteredDogs.length === 0) {
+        dogsContainer.innerHTML = "<p>No dogs found matching your criteria.</p>";
+        return;
+      }
+
+      dogsContainer.innerHTML = filteredDogs.map(dog => `
+        <div class="dog-card" data-scroll>
+          <div class="dog-info">
+            <h2>${dog.name}</h2>
+            <p><strong>Breed:</strong> ${dog.breed}</p>
+            <p><strong>Age:</strong> ${dog.age} years</p>
+            <p><strong>Gender:</strong> ${dog.gender}</p>
+            <p><strong>Location:</strong> ${dog.location}</p>
+            <a href="tel:+91${dog.contact.replace(/\s+/g, '')}" class="adopt-btn">Adopt Me!</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function isInAgeRange(age, range) {
+      age = parseFloat(age);
+      switch(range) {
+        case '0-1': return age >= 0 && age <= 1;
+        case '1-3': return age > 1 && age <= 3;
+        case '3-5': return age > 3 && age <= 5;
+        case '5+': return age > 5;
+        default: return true;
+      }
+    }
+
+    searchInput.addEventListener('input', loadDogs);
+    genderFilter.addEventListener('change', loadDogs);
+    ageFilter.addEventListener('change', loadDogs);
+
+    loadDogs();
+  </script>
+</body>
+</html>

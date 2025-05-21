@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: furr;
+        }
+
+        .dashboard-container {
+            /* max-width: 1200px; */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #efeae3;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #d3b094;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .stat-card p {
+            margin: 0.5rem 0 0;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .rewards-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .rewards-section h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .reward-tier {
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #d3b094;
+            margin: 1.5rem 0;
+        }
+
+        .points-display {
+            font-size: 1.4rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #efeae3;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #d3b094;
+            transition: width 0.5s ease;
+        }
+
+        .tier-info {
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1.5rem;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                gap: 1.5rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .rewards-section {
+                padding: 2rem;
+            }
+
+            .rewards-section h2 {
+                font-size: 2rem;
+            }
+
+            .reward-tier {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+
+            .stat-card h3 {
+                font-size: 1.5rem;
+            }
+
+            .rewards-section h2 {
+                font-size: 1.8rem;
+            }
+
+            .reward-tier {
+                font-size: 1.8rem;
+            }
+
+            .tier-info {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <div class="dog-loader">
+            <div class="dog-body"></div>
+            <div class="dog-head">
+                <div class="dog-ear dog-ear-left"></div>
+                <div class="dog-ear dog-ear-right"></div>
+                <div class="dog-eye dog-eye-left"></div>
+                <div class="dog-eye dog-eye-right"></div>
+                <div class="dog-nose"></div>
+            </div>
+            <div class="dog-tail"></div>
+            <div class="dog-leg leg-1"></div>
+            <div class="dog-leg leg-2"></div>
+            <div class="dog-leg leg-3"></div>
+            <div class="dog-leg leg-4"></div>
+            <div class="paw-prints">
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+                <div class="paw"></div>
+            </div>
+            <div class="loading-text">FurCare Loading...</div>
+        </div>
+    </div>
+
+    
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Your Contribution Dashboard</h1>
+            <p>Track your impact and rewards</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="ri-heart-3-fill"></i>
+                <h3 id="donationCount">0</h3>
+                <p>Donations Made</p>
+            </div>
+            <div class="stat-card">
+                <i class="ri-hand-heart-fill"></i>
+                <h3 id="volunteeringCount">0</h3>
+                <p>Volunteering Sessions</p>
+            </div>
+            <div class="stat-card">
+                <i class="ri-dog-fill"></i>
+                <h3 id="dogHelpCount">0</h3>
+                <p>Dogs Helped</p>
+            </div>
+        </div>
+
+        <div class="rewards-section">
+            <h2>Your Rewards</h2>
+            <div class="reward-tier" id="rewardTier">BRONZE</div>
+            <div class="points-display">
+                <span id="totalPoints">0</span> Points
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="tier-info">
+                <p>Keep contributing to reach the next tier!</p>
+                <p>BRONZE: 0-199 points | SILVER: 200-499 points | GOLD: 500-999 points | PLATINUM: 1000+ points</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API endpoints
+        const API_BASE_URL = 'http://localhost:8081/api';
+
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        }
+        else{
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        // Fetch user contributions
+        async function fetchUserContributions() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/dashboard/contributions`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch contributions');
+                }
+
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error fetching contributions:', error);
+            }
+        }
+
+        // Update dashboard with user data
+        function updateDashboard(data) {
+            document.getElementById('donationCount').textContent = data.donationCount;
+            document.getElementById('volunteeringCount').textContent = data.volunteeringCount;
+            document.getElementById('dogHelpCount').textContent = data.dogHelpCount;
+            document.getElementById('totalPoints').textContent = data.totalPoints;
+            document.getElementById('rewardTier').textContent = data.rewardTier;
+
+            // Update progress bar
+            const progressFill = document.getElementById('progressFill');
+            let progress = 0;
+            
+            switch(data.rewardTier) {
+                case 'BRONZE':
+                    progress = (data.totalPoints / 200) * 100;
+                    break;
+                case 'SILVER':
+                    progress = ((data.totalPoints - 200) / 300) * 100;
+                    break;
+                case 'GOLD':
+                    progress = ((data.totalPoints - 500) / 500) * 100;
+                    break;
+                case 'PLATINUM':
+                    progress = 100;
+                    break;
+            }
+            
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        // Load dashboard data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchUserContributions();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -9,31 +9,7 @@
     <link rel="stylesheet" href="put.css">
 </head>
 <body data-scroll-container>
-    <div id="loader">
-        <div class="dog-loader">
-            <div class="dog-body"></div>
-            <div class="dog-head">
-                <div class="dog-ear dog-ear-left"></div>
-                <div class="dog-ear dog-ear-right"></div>
-                <div class="dog-eye dog-eye-left"></div>
-                <div class="dog-eye dog-eye-right"></div>
-                <div class="dog-nose"></div>
-            </div>
-            <div class="dog-tail"></div>
-            <div class="dog-leg leg-1"></div>
-            <div class="dog-leg leg-2"></div>
-            <div class="dog-leg leg-3"></div>
-            <div class="dog-leg leg-4"></div>
-            <div class="paw-prints">
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-            </div>
-            <div class="loading-text">FurCare Loading...</div>
-        </div>
-    </div>
+    
     <div id="main" data-scroll-section>
         <div class="flip-container" id="flip-container">
             <div class="flipper">
@@ -53,6 +29,9 @@
                             <label for="age">Age (in years):</label>
                             <input type="number" id="age" name="age" placeholder="Enter your Age" required min="0">
 
+                            <label for="pin">Pin Code:</label>
+                            <input type="number" id="pin" name="pin" placeholder="Enter pin code" required>
+
                             <label>Gender:</label>
                             <div class="gender-container">
                                 <input type="radio" id="male" name="gender" value="male" required>
@@ -64,7 +43,7 @@
                             </div>
 
                             <label for="address">Address:</label>
-                            <input type="address" id="address" name="address" placeholder="Enter your Address" required>
+                            <input type="text" id="address" name="address" placeholder="Enter your Address" required>
 
                             <label for="contact">Email ID:</label>
                             <input type="email" id="contact" name="contact" placeholder="Enter your Email Address" required>
@@ -90,33 +69,76 @@
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById("adoptionForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Thanks for your love towards Dogs! 🩺");
-            this.reset();
-        });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(() => {
                 document.body.classList.add("loaded");
-            }, 1000); // 3 seconds loading time for demo purposes
+            }, 1000);
 
             const flipContainer = document.getElementById("flip-container");
             const dogImage = document.getElementById("dog-image");
             const formSection = document.querySelector(".form-section");
 
-            dogImage.addEventListener("click", function() {
+            dogImage.addEventListener("click", function () {
                 flipContainer.classList.add("flipped");
             });
 
-            document.addEventListener("click", function(event) {
+            document.addEventListener("click", function (event) {
                 if (!formSection.contains(event.target) && !dogImage.contains(event.target)) {
                     flipContainer.classList.remove("flipped");
                 }
             });
+
+            const adoptionForm = document.getElementById("adoptionForm");
+
+            adoptionForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                try {
+                    const vetData = {
+                        name: document.getElementById("dogName").value,
+                        age: document.getElementById("age").value,
+                        pin: document.getElementById("pin").value,
+                        gender: document.querySelector('input[name="gender"]:checked').value,
+                        address: document.getElementById("address").value,
+                        emailId: document.getElementById("contact").value,
+                        qualification: document.getElementById("qualification").value,
+                        workExperience: document.getElementById("experience").value
+                    };
+
+                    const token = localStorage.getItem("token");
+                    if (!token) {
+                        alert("You must be logged in to submit details.");
+                        return;
+                    }
+
+                    const response = await fetch("http://localhost:8081/veterinarians", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify(vetData)
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || "Submission failed");
+                    }
+
+                    alert("Thanks for your love towards Dogs! 🩺");
+                    adoptionForm.reset();
+                    flipContainer.classList.remove("flipped");
+
+                } catch (error) {
+                    console.error("Error submitting form:", error);
+                    alert("Error submitting form. Please try again.");
+                }
+            });
         });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>

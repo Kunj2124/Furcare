@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vet Consultation</title>
+  <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* Remove default scroll */
+    }
+
+    [data-scroll-container] {
+      min-height: 100vh;
+    }
+
+    .meeting-section {
+      display: flex;
+      flex-wrap: wrap;
+      background-color: #efeae3;
+      padding: 5vw 3vw;
+    }
+
+    .meeting-left, .meeting-right {
+      flex: 1;
+      min-width: 300px;
+      padding: 2vw;
+    }
+
+    .meeting-left h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1vw;
+      color: #000;
+    }
+
+    .meeting-left p {
+      font-size: 1.2rem;
+      margin-bottom: 2vw;
+      color: #333;
+    }
+
+    .feature {
+      margin-bottom: 1.5vw;
+      font-size: 1.1rem;
+      padding-left: 1.5rem;
+      position: relative;
+      color: #222;
+    }
+
+    .feature::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: #d28c4e;
+    }
+
+    .calendly-inline-widget {
+      width: 100%;
+      min-width: 320px;
+      height: 630px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+
+    #confirmation-message {
+      display: none;
+      margin-top: 30px;
+      padding: 15px;
+      background-color: lightsalmon;
+      color: white;
+      border: 1px solid lightsalmon;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .meeting-section {
+        flex-direction: column;
+        padding: 6vw 4vw;
+      }
+
+      .meeting-left h2 {
+        font-size: 2rem;
+      }
+
+      .meeting-left p,
+      .feature {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="main" data-scroll-container>
+    <section class="meeting-section">
+      <div class="meeting-left" data-scroll data-scroll-speed="1">
+        <h2>Book Your Consultation</h2>
+        <p>At FurCare, your pet’s health and happiness come first. Schedule a consultation at your convenience, and we’ll connect you with a trusted veterinarian who best fits your needs.</p>
+        <div class="feature"><strong>Personalized Pet Care</strong> — Receive expert guidance tailored to your pet’s health and lifestyle.</div>
+        <div class="feature"><strong>Urgent Assistance</strong> — Get swift support in critical situations, because every second matters.</div>
+        <div class="feature"><strong>Preventive Wellness</strong> — Plan regular checkups, vaccinations, and nutrition consultations with ease.</div>        
+      </div>
+      <div class="meeting-right" data-scroll data-scroll-speed="1.5">
+        <div class="calendly-inline-widget"
+             data-url="https://calendly.com/shwetatechnovation/30min"
+             data-utm="FurCareConsult"
+             id="calendly-widget">
+        </div>
+        <div id="confirmation-message">
+          ✅ A veterinarian has been successfully assigned to your consultation! You’ll receive an email with their details shortly.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Locomotive Scroll Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const scroll = new LocomotiveScroll({
+        el: document.querySelector('#main'),
+        smooth: true
+      });
+
+      // Calendly confirmation event
+      window.addEventListener('message', function(e) {
+        if (e.origin === 'https://calendly.com' && e.data.event === 'calendly.event_scheduled') {
+          const confirmation = document.getElementById("confirmation-message");
+          confirmation.style.display = "block";
+          confirmation.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

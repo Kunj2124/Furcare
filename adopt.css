@@ -1,0 +1,170 @@
+@font-face {
+    font-family: furr;
+    src: url(./NeueHaasDisplayMediu.ttf);
+  }
+  
+  @font-face {
+    font-family: furr;
+    font-weight: 100;
+    src: url(./NeueHaasDisplayLight.ttf);
+  }
+  
+  @font-face {
+    font-family: furr;
+    font-weight: 200;
+    src: url(./NeueHaasDisplayRoman.ttf);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: furr;
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    background-color: #efeae3;
+  }
+  
+  #main {
+    min-height: 100vh;
+    padding: 120px 5vw 50px;
+    background-color: #efeae3;
+  }
+  
+  #main h1 {
+    font-size: 3.5vw;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+  }
+  
+  #filters {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+  }
+  
+  #searchInput, #genderFilter, #ageFilter {
+    padding: 12px 20px;
+    border: 2px solid #d3b094;
+    border-radius: 30px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  #searchInput:focus, #genderFilter:focus, #ageFilter:focus {
+    border-color: #c19a7e;
+    box-shadow: 0 0 10px rgba(193, 154, 126, 0.2);
+  }
+  
+  #searchInput::placeholder {
+    color: #999;
+  }
+  
+  #dogs-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+  }
+  
+  .dog-card {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .dog-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .dog-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .dog-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .dog-info p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  .adopt-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: #d3b094;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .adopt-btn:hover {
+    background-color: #c19a7e;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    #main h1 {
+      font-size: 2.5rem;
+    }
+  
+    #filters {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0 20px;
+    }
+  
+    #searchInput, #genderFilter, #ageFilter {
+      width: 100%;
+    }
+  
+    #dogs-container {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      padding: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #main {
+      padding: 100px 20px 30px;
+    }
+  
+    #main h1 {
+      font-size: 2rem;
+    }
+  
+    .dog-info h2 {
+      font-size: 1.3rem;
+    }
+  }
+  

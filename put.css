@@ -513,3 +513,88 @@ select:focus {
        height: auto;
    }
 }
+
+/* Flip functionality enhancements */
+.flip-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.flipper {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+}
+
+.flip-container.flipped .flipper {
+    transform: rotateY(180deg);
+}
+
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.front {
+    transform: rotateY(0deg);
+    z-index: 2;
+}
+
+.back {
+    transform: rotateY(180deg);
+    z-index: 1;
+}
+
+/* Optional: layout for text-section */
+.text-section {
+    padding: 20px;
+    text-align: center;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .flip-container {
+        max-width: 100%;
+    }
+
+    .flipper {
+        min-height: 500px;
+    }
+
+    .front, .back {
+        position: absolute;
+        height: 100%;
+    }
+}
+
+/* Ensure full height layout and vertical centering */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #efeae3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust the flip container to be centered and responsive */
+#main {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}

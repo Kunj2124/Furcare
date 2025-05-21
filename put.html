@@ -5,44 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help One</title>
     <link rel="shortcut icon" href="./Media Files/paw.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="put.css">
 </head>
-<body data-scroll-container>
-    <div id="loader">
-        <div class="dog-loader">
-            <div class="dog-body"></div>
-            <div class="dog-head">
-                <div class="dog-ear dog-ear-left"></div>
-                <div class="dog-ear dog-ear-right"></div>
-                <div class="dog-eye dog-eye-left"></div>
-                <div class="dog-eye dog-eye-right"></div>
-                <div class="dog-nose"></div>
-            </div>
-            <div class="dog-tail"></div>
-            <div class="dog-leg leg-1"></div>
-            <div class="dog-leg leg-2"></div>
-            <div class="dog-leg leg-3"></div>
-            <div class="dog-leg leg-4"></div>
-            <div class="paw-prints">
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-                <div class="paw"></div>
-            </div>
-            <div class="loading-text">FurCare Loading...</div>
-        </div>
-    </div>
-    <div id="main" data-scroll-section>
+<body>
+    <div id="main">
         <div class="flip-container" id="flip-container">
             <div class="flipper">
                 <div class="front">
                     <div class="text-section">
                         <h1>Hey, In search of <br> a home for your dog?</h1>
-                        <h3>Click Here👉</h3>
+                        <h3>Click Here 👇</h3>
+                        <img src="./Media Files/dog-image.png" alt="Dog Image" class="dog-image" id="dog-image">
                     </div>
-                    <img src="./Media Files/dog-image.png" alt="Dog Image" class="dog-image" id="dog-image">
                 </div>
                 <div class="back">
                     <section class="form-section">
@@ -58,7 +32,7 @@
 
                             <label for="location">Location:</label>
                             <input type="text" id="location" name="location" placeholder="Enter location" required>
-                        
+
                             <label>Gender:</label>
                             <div class="gender-container">
                                 <input type="radio" id="male" name="gender" value="male" required>
@@ -66,13 +40,9 @@
                                 <input type="radio" id="female" name="gender" value="female" required>
                                 <label for="female">Female</label>
                             </div>
-                        
-                            <div class="file-input-container">
-                                <label for="image" class="animated-file-input">
-                                    <span>Upload Dog's Image</span>
-                                    <input type="file" id="image" name="image" accept="image/*" required>
-                                </label>
-                            </div>
+
+                            <label for="contact">Contact Number:</label>
+                            <input type="tel" id="contact" name="contact" placeholder="Enter your mobile number" required>
 
                             <div class="submit-btn-container">
                                 <button type="submit" class="submit-btn">Submit Details</button>
@@ -83,42 +53,67 @@
             </div>
         </div>
     </div>
+
     <script>
-        document.getElementById("adoptionForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            alert("Dog details submitted successfully! 🐕");
-            this.reset();
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                document.body.classList.add("loaded");
-            }, 1000); // 3 seconds loading time for demo purposes
-
-            const fileInput = document.getElementById("image");
-            const label = fileInput.previousElementSibling;
-
-            fileInput.addEventListener("change", function() {
-                const fileName = this.files[0].name;
-                label.textContent = fileName;
-            });
-
+        document.addEventListener("DOMContentLoaded", function () {
+            const adoptionForm = document.getElementById("adoptionForm");
             const flipContainer = document.getElementById("flip-container");
             const dogImage = document.getElementById("dog-image");
-            const formSection = document.querySelector(".form-section");
 
-            dogImage.addEventListener("click", function() {
+            adoptionForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                try {
+                const dogData = {
+                    name: document.getElementById("dogName").value,
+                    breed: document.getElementById("breed").value,
+                    age: parseInt(document.getElementById("age").value),
+                    gender: document.querySelector('input[name="gender"]:checked').value,
+                    location: document.getElementById("location").value,
+                    contact: document.getElementById("contact").value
+                };
+
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    alert("You must be logged in to submit details.");
+                    return;
+                }
+                console.log(token);
+
+                const response = await fetch("http://localhost:8081/api/dashboard/adddog", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(dogData)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || "Submission failed");
+                }
+
+                alert("Dog details submitted successfully! 🐕");
+                adoptionForm.reset();
+                flipContainer.classList.remove("flipped");
+            }catch (error) {
+                console.error("Error submitting form:", error);
+                alert("Error submitting form. Please try again.");
+            }
+        });
+
+            dogImage.addEventListener("click", function () {
                 flipContainer.classList.add("flipped");
             });
 
-            document.addEventListener("click", function(event) {
-                if (!formSection.contains(event.target) && !dogImage.contains(event.target)) {
+            document.addEventListener("click", function (event) {
+                const isClickInside = flipContainer.contains(event.target);
+                if (!isClickInside) {
                     flipContainer.classList.remove("flipped");
                 }
             });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html>
